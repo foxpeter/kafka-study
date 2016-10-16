@@ -13,8 +13,8 @@ import kafka.serializer.StringEncoder;
 public class ProducerDemo {
 
   static private final String TOPIC = "topic1";
-  static private final String ZOOKEEPER = "localhost:2181";
-  static private final String BROKER_LIST = "localhost:9092";
+  static private final String ZOOKEEPER = "192.168.147.48:2181";
+  static private final String BROKER_LIST = "192.168.147.48:9092";
 //  static private final int PARTITIONS = TopicAdmin.partitionNum(ZOOKEEPER, TOPIC);
   static private final int PARTITIONS = 3;
 
@@ -32,8 +32,8 @@ public class ProducerDemo {
     props.put("partitioner.class", HashPartitioner.class.getName());
     // props.put("partitioner.class", "kafka.producer.DefaultPartitioner");
 //    props.put("compression.codec", "0");
-    props.put("producer.type", "async");
-    props.put("batch.num.messages", "3");
+    props.put("producer.type", "sync");
+    props.put("batch.num.messages", "1");
     props.put("queue.buffer.max.ms", "10000000");
     props.put("queue.buffering.max.messages", "1000000");
     props.put("queue.enqueue.timeout.ms", "20000000");
@@ -46,6 +46,7 @@ public class ProducerDemo {
   public static void sendOne(Producer<String, String> producer, String topic) throws InterruptedException {
     KeyedMessage<String, String> message1 = new KeyedMessage<String, String>(topic, "31", "test 31");
     producer.send(message1);
+    System.out.println("----------end1--------");
     Thread.sleep(5000);
     KeyedMessage<String, String> message2 = new KeyedMessage<String, String>(topic, "31", "test 32");
     producer.send(message2);

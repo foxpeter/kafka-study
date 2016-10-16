@@ -18,7 +18,7 @@ public class DemoConsumer {
    * @param args
    */
   public static void main(String[] args) {
-     args = new String[]{"localhost:2181", "topic1", "group1", "consumer1"};
+     args = new String[]{"192.168.147.48:2181", "topic1", "group1", "consumer1"};
     if (args == null || args.length != 4) {
       System.err.print(
           "Usage:\n\tjava -jar kafka_consumer.jar ${zookeeper_list} ${topic_name} ${group_name} ${consumer_id}");
