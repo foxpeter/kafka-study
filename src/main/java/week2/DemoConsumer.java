@@ -1,10 +1,7 @@
 package week2;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
+import com.google.protobuf.InvalidProtocolBufferException;
+import domain.UnionClickLogProto;
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
@@ -12,13 +9,18 @@ import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 import kafka.message.MessageAndMetadata;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 public class DemoConsumer {
 
   /**
    * @param args
    */
   public static void main(String[] args) {
-     args = new String[]{"192.168.147.48:2181", "topic1", "group1", "consumer1"};
+     args = new String[]{"192.168.147.48:2181", "stormtest1", "group2", "consumer1"};
     if (args == null || args.length != 4) {
       System.err.print(
           "Usage:\n\tjava -jar kafka_consumer.jar ${zookeeper_list} ${topic_name} ${group_name} ${consumer_id}");
@@ -49,11 +51,17 @@ public class DemoConsumer {
     while (it1.hasNext()) {
       MessageAndMetadata<byte[], byte[]> messageAndMetadata = it1.next();
       String message =
-          String.format("Consumer ID:%s, Topic:%s, GroupID:%s, PartitionID:%s, Offset:%s, Message Key:%s, Message Payload: %s",
-              consumerid,
-              messageAndMetadata.topic(), groupid, messageAndMetadata.partition(),
-              messageAndMetadata.offset(), new String(messageAndMetadata.key()),new String(messageAndMetadata.message()));
-      System.out.println(message);
+          String.format("Consumer ID:%s, Topic:%s, GroupID:%s, PartitionID:%s, Offset:%s, Message Key:%s",
+                  consumerid,
+                  messageAndMetadata.topic(), groupid, messageAndMetadata.partition(),
+                  messageAndMetadata.offset(), new String(messageAndMetadata.key()));
+      try {
+        UnionClickLogProto.ClickLogInfo clickLogInfo = UnionClickLogProto.ClickLogInfo.parseFrom(messageAndMetadata.message());
+        System.out.println(message + " ,,, protoClickId = " + clickLogInfo.getClickId());
+      } catch (InvalidProtocolBufferException e) {
+        e.printStackTrace();
+      }
+
     }
   }
 

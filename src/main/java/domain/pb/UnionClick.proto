@@ -1,0 +1,50 @@
+syntax="proto2";
+
+package ordertracker;
+option  java_package = "domain";
+option  java_outer_classname = "UnionClickLogProto";
+message UnionClickLog{
+    repeated ClickLogInfo   clickLogInfo=1;//点击日志info
+}
+message UnionClickRedisLog {
+    optional    ClickLogInfo    clickLogInfo=1;//点击日志info
+    optional    int64           venderid = 2;//venderid
+    optional    int64           sku_spu_id = 3;//spu
+    optional    string          adOwnerType = 4;
+    optional    string          cleanAdOwner = 5;
+    optional    int32           jda_source = 6;
+}
+message ClickLogInfo{
+    optional    int32 nc=1;//点击作弊:0作弊 1 正常
+    optional    string createtime=2;//点击时间
+    optional    string ip=3;//ip
+    optional    string ua=4;//用户的user_agent
+    optional    string uuid=5;//用户唯一ID(unionuuid 的cookie)
+    optional    string clickId=6;//点击ID
+    optional    string refer=7;//浏览器refer
+    optional    string pin=8;//用户pin
+    optional    int32 caseId=9;//js橱窗ID
+    optional    int32 proId=10;//推广类型
+    optional    int32 planId=11;//计划ID
+    optional    int32 matId=12;//js素材ID
+    optional    string st=13;//点击来源
+    optional    string tu=14;//目标页
+    optional    string playId=15;//js播放ID
+    optional    int32 siteId=16;//网站ID
+    optional    int32 unionId=17;//联盟ID
+    optional    string cUnionId=18;//子联盟ID
+    optional    string webtype=19;//网络类型
+    optional    string euid=20;//子籽联盟ID,站外用户设置
+    optional    string adOwner=21;//广告推广者
+    optional    string sku=22;//落地单品页sku
+    optional    string jdaUid=23;//jda中用户唯一ID
+    optional    string unpl=24;//用户unpl
+    optional    int32 convertType=25;//转化目标页类型(PC端商品页转到re.jd.com的类型:1,默认不转化为0)
+    optional    int32 adTrafficType = 26; //17:轻微店 16:CPC联盟流量 6:CPS联盟流量 定义见ArchiveLogInfo::AdClickLogInfo
+    optional    int32 adId = 27; // 广告位id 用于播放
+    optional    int32 positionId = 28; // 联盟推广位id 站长账户结构
+    optional    string qwdpin = 29; // 轻微店分销者pin
+    optional    int32 actId = 30; // 轻微店活动id
+    optional    int32 adSpreadType = 31;
+    optional    string ext = 32;
+}
